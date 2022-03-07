@@ -3,7 +3,7 @@ import Header from "./../components/Header";
 import { Link } from "react-router-dom";
 import { useLocation, useNavigate, useParams } from "react-router";
 import {useDispatch, useSelector} from "react-redux";
-import { addToCart } from "../Redux/Actions/CartActions";
+import { addToCart, removeFromCart } from "../Redux/Actions/CartActions";
 const CartScreen = () => {
   window.scrollTo(0, 0);
 
@@ -31,8 +31,8 @@ const CartScreen = () => {
     navigate("/login?redirect=shipping");
   }
 
-  const removeFromCartHandler = () => {
-    //TODO
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id))
   }
   return (
     <Fragment>
@@ -63,8 +63,9 @@ const CartScreen = () => {
             </div>
             {/* cartitems */}
             {cartItems.map((item, index) => (
-                <div className="cart-iterm row" key={index} onClick={() => removeFromCartHandler}>
-                  <div className="remove-button d-flex justify-content-center align-items-center">
+                <div className="cart-iterm row" key={index}>
+                  <div className="remove-button d-flex justify-content-center align-items-center"
+                   onClick={() => removeFromCartHandler(item.productId)}>
                     <i className="fas fa-times"></i>
                   </div>
                   <div className="cart-image col-md-3">
@@ -78,7 +79,9 @@ const CartScreen = () => {
                   <div className="cart-qty col-md-2 col-sm-5 mt-md-5 mt-3 mt-md-0 d-flex flex-column justify-content-center">
                     <h6>QUANTITY</h6>
                     <select value={item.qty} 
-                      onChange={(e) => dispatch(addToCart(item.productId, Number(e.target.value)))}>
+                      onChange={(e) => {
+                        navigate(`/cart/${item.productId}/?qty=${e.target.value}`);// Thay ca thong tin tren duong dan
+                        dispatch(addToCart(item.productId, Number(e.target.value)))}}>
                         {[...Array(item.countInStock).keys()].map((x) => (
                           <option key={x + 1} value={x + 1}>
                             {x + 1}

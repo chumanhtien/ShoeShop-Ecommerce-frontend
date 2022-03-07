@@ -31,7 +31,7 @@ const SingleProduct = () => {
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
   const {loading, error, product} = productDetails;
-  console.log(product);
+  // console.log(product);
   useEffect(() => {
     dispatch(listProductDetails(id));
   }, [dispatch, id]);
@@ -40,6 +40,7 @@ const SingleProduct = () => {
   const AddtoCartHandle = (e) => {
     e.preventDefault();
     navigate(`/cart/${id}?qty=${qty}`);
+    // navigate('/cart');
   }
   return (
     <Fragment>
