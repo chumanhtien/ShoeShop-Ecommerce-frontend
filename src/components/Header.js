@@ -1,8 +1,10 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
+import { logout } from "../Redux/Actions/UserActions";
+import "../App.css"
 const Header = () => {
+  const dispatch = useDispatch()
 
   const cart = useSelector((state) => state.cart);
   const {cartItems} = cart;
@@ -12,7 +14,7 @@ const Header = () => {
   const {userInfo} = userLogin;
 
   const logoutHandler = () => {
-    console.log("Log out!");
+    dispatch(logout());
   }
   return (
     <div>
@@ -73,7 +75,6 @@ const Header = () => {
                           <Link className="dropdown-item" to="/profile">
                             Profile
                           </Link>
-
                           <Link className="dropdown-item" to="#"
                             onClick={logoutHandler}>
                             Logout
