@@ -69,7 +69,7 @@ const Header = () => {
                           aria-haspopup="true"
                           aria-expanded="false"
                         >
-                          <i class="fas fa-user"></i>
+                          <i className="fas fa-user"></i>
                         </button>
                         <div className="dropdown-menu">
                           <Link className="dropdown-item" to="/profile">
@@ -90,7 +90,7 @@ const Header = () => {
                           aria-haspopup="true"
                           aria-expanded="false"
                         >
-                          <i class="fas fa-user"></i>
+                          <i className="fas fa-user"></i>
                         </button>
                         <div className="dropdown-menu">
                           <Link className="dropdown-item" to="/login">
@@ -157,7 +157,7 @@ const Header = () => {
                         aria-expanded="false"
                       >
                         {`${userInfo.name} `}
-                        <i class="fas fa-user"></i>
+                        <i className="fas fa-user"></i>
                       </button>
                       <div className="dropdown-menu">
                         <Link className="dropdown-item" to="/profile">
