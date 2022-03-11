@@ -601,9 +601,20 @@ textarea:focus {
 .payment-container {
   margin-top: 20px;
 }
+.form-check-input {
+  margin-top: 2px;
+}
+.form-check-label {
+  margin-left: 10px;
+}
 .radio-container {
+  display: flex;
+  flex-direction: row;
   padding: 10px 0;
   text-align: start;
+}
+.radio-container:hover {
+  cursor: pointer;
 }
 .radio-container input {
   font-size: 17px;
@@ -612,6 +623,7 @@ textarea:focus {
   padding: 0 20px;
   font-size: 17px;
 }
+
 .order-detail p {
   margin-top: 2px;
 }
@@ -666,4 +678,15 @@ textarea:focus {
 .page-item.active .page-link {
   background-color: black;
   border: 1px solid black;
+}
+
+
+/* Place Order */
+.align-items-center {
+  display: flex;
+  justify-content: center;
+}
+.font-bold {
+  font-weight: 600;
+  color: #1cb803;
 }

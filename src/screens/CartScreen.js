@@ -27,8 +27,15 @@ const CartScreen = () => {
   }, [dispatch, id, qty]);
 
   const navigate = useNavigate();
+  
   const checkOutHandler = () => {
-    navigate("/login?redirect=shipping");
+    navigate("/login?redirect=/shipping")
+    // if(!localStorage.getItem("userInfo")) {
+    //   navigate("/login");
+    // }
+    // else {
+    //   navigate("/shipping");
+    // }
   }
 
   const removeFromCartHandler = (id) => {
