@@ -2,7 +2,7 @@ import { PRODUCT_DETAILS_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS,
 import axios from "axios"
 
 //LIST PRODUCT
-export const listProduct = () => async(dispatch) => {
+export const listProducts = () => async(dispatch) => {
     try {
         dispatch({type: PRODUCT_LIST_REQUEST});
         const {data} = await axios.get("/api/products");
@@ -17,7 +17,7 @@ export const listProduct = () => async(dispatch) => {
 };
 
 //SINGLE PRODUCT
-export const listProductDetails = (id) => async(dispatch) => {
+export const getSingleProductDetails = (id) => async(dispatch) => {
     try {
         dispatch({type: PRODUCT_DETAILS_REQUEST});
         const {data} = await axios.get(`/api/products/${id}`);

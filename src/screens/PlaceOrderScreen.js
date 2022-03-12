@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Header from "./../components/Header";
 import Message from "../components/LoadingError/Error";
+import { useNavigate } from "react-router";
+import { ORDER_CREATE_RESET } from "../Redux/Constants/OrderConstants";
+import { createOrder } from "../Redux/Actions/OrderActions";
+
 const PlaceOrderScreen = () => {
   window.scrollTo(0, 0);
 
@@ -25,8 +29,31 @@ const PlaceOrderScreen = () => {
   cart.taxPrice = addDemicals(Number(0.066 * cart.itemsPrice));
     //total
   cart.totalPrice = addDemicals(Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice));
-  const placeOrderHandler = (e) => {
-    e.preventDefault();
+
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const {order, success, error} = orderCreate;
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (success) {
+      navigate(`/order/${order._id}`);
+      dispatch({type: ORDER_CREATE_RESET})
+    }
+  }, [dispatch, success, order, navigate]);
+
+  const placeOrderHandler = () => {
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      })
+    )  
   };
 
   return (
@@ -171,9 +198,14 @@ const PlaceOrderScreen = () => {
                 PLACE ORDER
               </Link>
             </button> */}
-            {/* <div className="my-3 col-12">
-                <Message variant="alert-danger">{error}</Message>
-              </div> */}
+            {
+              error && (
+                <div className="my-3 col-12">
+                  <Message variant="alert-danger">{error}</Message>
+                </div>
+              )
+            }
+            
           </div>
         </div>
       </div>

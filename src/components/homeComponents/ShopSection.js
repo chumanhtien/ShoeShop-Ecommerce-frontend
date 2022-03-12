@@ -1,12 +1,13 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
+// import { useState } from "react";
 import { Link } from "react-router-dom";
 import Rating from "./Rating";
 import Pagination from "./pagination";
-import {listProduct} from '../../Redux/Actions/ProductActions';
+import {listProducts} from '../../Redux/Actions/ProductActions';
 import {useDispatch, useSelector} from "react-redux";
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Error";
-import axios from "axios"
+// import axios from "axios"
 
 const ShopSection = () => {
   // const [products, setProducts] = useState([]);
@@ -24,7 +25,7 @@ const ShopSection = () => {
   const {loading, error, products} = productList;
 
   useEffect(() => {
-    dispatch(listProduct());
+    dispatch(listProducts());
   }, [dispatch]);
   return (
     <Fragment>

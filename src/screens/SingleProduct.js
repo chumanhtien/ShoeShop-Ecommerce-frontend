@@ -7,9 +7,9 @@ import { useParams } from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
-import axios from "axios";
-import { listProductDetails } from "../Redux/Actions/ProductActions";
+// import axios from "axios";
 import Loading from "../components/LoadingError/Loading";
+import { getSingleProductDetails } from "../Redux/Actions/ProductActions";
 const SingleProduct = () => {
   window.scrollTo(0, 0);
   // const product = products.find(p => p._id === match.params.id)
@@ -33,7 +33,7 @@ const SingleProduct = () => {
   const {loading, error, product} = productDetails;
   // console.log(product);
   useEffect(() => {
-    dispatch(listProductDetails(id));
+    dispatch(getSingleProductDetails(id));
   }, [dispatch, id]);
 
   const navigate = useNavigate();
