@@ -5,6 +5,7 @@ import ProfileTabs from "../components/profileComponents/ProfileTabs";
 import { getUserDetails } from "../Redux/Actions/UserActions";
 import Orders from "./../components/profileComponents/Orders";
 import moment from "moment";
+import { getMyListOrders } from "../Redux/Actions/OrderActions";
 
 const ProfileScreen = () => {
   window.scrollTo(0, 0);
@@ -15,10 +16,15 @@ const ProfileScreen = () => {
   // console.log(userLogin)
   const {userInfo} = userLogin;
 
+  const orderMyList = useSelector((state) => state.orderMyList);
+  const {loading, error, orders} = orderMyList;
+
+
   // const userDetails = useSelector((state) => state.userDetails);
   // console.log("userDetails:", userDetails)
   // const {userInfo} = userDetails;
   useEffect(() => {
+    dispatch(getMyListOrders())
     dispatch(getUserDetails("profile"));
   }, [dispatch, userInfo]);
   return (
@@ -74,7 +80,7 @@ const ProfileScreen = () => {
                     aria-selected="false"
                   >
                     Orders List
-                    <span className="badge2">3</span>
+                    <span className="badge2">{orders ? orders.length : 0}</span>
                   </button>
                 </div>
               </div>
@@ -100,7 +106,7 @@ const ProfileScreen = () => {
               role="tabpanel"
               aria-labelledby="v-pills-profile-tab"
             >
-              <Orders />
+              <Orders orders = {orders} loading = {loading} error = {error}/>
             </div>
           </div>
         </div>
