@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import Header from "./../components/Header";
 import { useNavigate } from "react-router";
 import { savePaymentMethod } from "../Redux/Actions/CartActions";
@@ -51,7 +51,7 @@ const PaymentScreen = () => {
                   type="radio" value={paymentMethod}
                   checked={paymentMethod === method.id}
                   onChange={(e) => setPaymentMethod(method.id)}/>
-                <div className="form-check-label">{method.name}</div>
+                <div className="form-check-label">{method.name === "PayPal" ? "PayPal or Credit Card" : method.name}</div>
               </label>
              ) )}
               

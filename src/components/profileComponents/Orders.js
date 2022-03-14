@@ -58,27 +58,12 @@ const Orders = (props) => {
                       </tr>
                     ))
                   }
-                  
-                  {/* Cancelled */}
-                  {/* <tr className={"alert-danger"}>
-                    <td>
-                      <a href={`/`} className="link">
-                        2
-                      </a>
-                    </td>
-                    <td>Not Paid</td>
-                    <td>Dec 12 2021</td>
-                    <td>$34</td>
-                  </tr> */}
                 </tbody>
               </table>
             </div>
           )
         )
       }
-      {/*  */}
-
-      
     </div>
   );
 };

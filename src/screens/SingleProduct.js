@@ -6,12 +6,14 @@ import Message from "./../components/LoadingError/Error";
 import { useParams } from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import { useNavigate } from 'react-router-dom';
+import moment from "moment"
 
 // import axios from "axios";
 import Loading from "../components/LoadingError/Loading";
-import { getSingleProductDetails } from "../Redux/Actions/ProductActions";
+import { createProductReview, getSingleProductDetails } from "../Redux/Actions/ProductActions";
+import { PRODUCT_CREATE_REVIEW_RESET } from "../Redux/Constants/ProductConstants";
 const SingleProduct = () => {
-  window.scrollTo(0, 0);
+  // window.scrollTo(0, 0);
   // const product = products.find(p => p._id === match.params.id)
   // const product = products[match.params.id - 1];
   // const {id} = useParams();
@@ -26,21 +28,48 @@ const SingleProduct = () => {
   // }, [id]);
 
   const [qty, setQty] = useState(1);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+
   const {id} = useParams();
   // console.log(id);
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
   const {loading, error, product} = productDetails;
-  // console.log(product);
+  console.log(product.reviews);
+  const userLogin = useSelector((state) => state.userLogin);
+  const {userInfo} = userLogin;
+
+  const productCreateReview = useSelector((state) => state.productCreateReview);
+  const {
+    loading: loadingCreateReview, 
+    error: errorCreateReview, 
+    success: successCreateReview
+  } = productCreateReview;
+
   useEffect(() => {
+    if (successCreateReview) {
+      alert("Review Submitted");
+      setRating(0);
+      setComment("");
+      dispatch({type: PRODUCT_CREATE_REVIEW_RESET})
+    }
     dispatch(getSingleProductDetails(id));
-  }, [dispatch, id]);
+  }, [dispatch, id, successCreateReview]);
 
   const navigate = useNavigate();
   const AddtoCartHandle = (e) => {
     e.preventDefault();
     navigate(`/cart/${id}?qty=${qty}`);
     // navigate('/cart');
+  }
+
+  const submitHandler = () => {
+    // e.preventDefault();
+    dispatch(createProductReview(id, {
+      rating, 
+      comment, 
+    }))
   }
   return (
     <Fragment>
@@ -112,57 +141,72 @@ const SingleProduct = () => {
               <div className="row my-5">
                 <div className="col-md-6">
                   <h6 className="mb-3">REVIEWS</h6>
-                  <Message variant={"alert-info mt-3"}>No Reviews</Message>
-                  <div className="mb-5 mb-md-3 bg-light p-3 shadow-sm rounded">
-                    <strong>Admin Doe</strong>
-                    <Rating />
-                    <span>Jan 12 2021</span>
-                    <div className="alert alert-info mt-3">
-                      Lorem Ipsum is simply dummy text of the printing and typesetting
-                      industry. Lorem Ipsum has been the industry's standard dummy
-                      text ever since the 1500s, when an unknown printer took a galley
-                      of type and scrambled it to make a type specimen book
-                    </div>
-                  </div>
+                  {
+                    product.reviews.length === 0 && (
+                      <Message variant={"alert-info mt-3"}>No Reviews</Message>
+                    )
+                  }
+                  {
+                    product.reviews.map((review, index) => (
+                      <div className="mb-5 mb-md-3 bg-light p-3 shadow-sm rounded" key={index}>
+                        <strong>{review.name}</strong>
+                        <Rating value={review.rating}/>
+                        <span>{moment(review.createdAt).calendar()}</span>
+                        <div className="alert alert-info mt-3">
+                          {review.comment}
+                        </div>
+                      </div>
+                    ))
+                  }
+                  
                 </div>
                 <div className="col-md-6">
                   <h6>WRITE A CUSTOMER REVIEW</h6>
-                  <div className="my-4"></div>
-
-                  <form>
-                    <div className="my-4">
-                      <strong>Rating</strong>
-                      <select className="col-12 bg-light p-3 mt-2 border-0 rounded">
-                        <option value="">Select...</option>
-                        <option value="1">1 - Poor</option>
-                        <option value="2">2 - Fair</option>
-                        <option value="3">3 - Good</option>
-                        <option value="4">4 - Very Good</option>
-                        <option value="5">5 - Excellent</option>
-                      </select>
-                    </div>
-                    <div className="my-4">
-                      <strong>Comment</strong>
-                      <textarea
-                        row="3"
-                        className="col-12 bg-light p-3 mt-2 border-0 rounded"
-                      ></textarea>
-                    </div>
-                    <div className="my-3">
-                      <button className="col-12 bg-black border-0 p-3 rounded text-white">
-                        SUBMIT
-                      </button>
-                    </div>
-                  </form>
-                  <div className="my-3">
-                    <Message variant={"alert-warning"}>
-                      Please{" "}
-                      <Link to="/login">
-                        " <strong>Login</strong> "
-                      </Link>{" "}
-                      to write a review{" "}
-                    </Message>
+                  <div className="my-4">
+                    { loadingCreateReview && <Loading/> }
+                    { errorCreateReview && <Message variant={"alert-danger"}>{errorCreateReview}</Message> }
                   </div>
+                  {
+                    userInfo ? (
+                      <form onSubmit={submitHandler}>
+                        <div className="my-4">
+                          <strong>Rating</strong>
+                          <select value={rating} onChange={(e) => setRating(e.target.value)} className="col-12 bg-light p-3 mt-2 border-0 rounded">
+                            <option value="">Select...</option>
+                            <option value="1">1 - Poor</option>
+                            <option value="2">2 - Fair</option>
+                            <option value="3">3 - Good</option>
+                            <option value="4">4 - Very Good</option>
+                            <option value="5">5 - Excellent</option>
+                          </select>
+                        </div>
+                        <div className="my-4">
+                          <strong>Comment</strong>
+                          <textarea
+                            row="3"
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            className="col-12 bg-light p-3 mt-2 border-0 rounded"
+                          ></textarea>
+                        </div>
+                        <div className="my-3">
+                          <button disabled={loadingCreateReview} className="col-12 bg-black border-0 p-3 rounded text-white">
+                            SUBMIT
+                          </button>
+                        </div>
+                      </form>
+                    ) : (
+                      <div className="my-3">
+                        <Message variant={"alert-warning"}>
+                          Please{" "}
+                          <Link to="/login">
+                            " <strong>Login</strong> "
+                          </Link>{" "}
+                          to write a review{" "}
+                        </Message>
+                      </div>
+                    )
+                  }    
                 </div>
               </div>
             </Fragment>

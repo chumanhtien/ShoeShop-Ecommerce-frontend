@@ -14,6 +14,7 @@ import PaymentScreen from "./screens/PaymentScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
 import NotFound from "./screens/NotFound";
+import PrivateRouter from "./screens/PrivateRouter";
 
 const App = () => {
   return (
@@ -23,13 +24,15 @@ const App = () => {
         <Route path="/products/:id" element={<SingleProduct/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Register/>} />
-        <Route path="/profile" element={<ProfileScreen/>} />
+        <Route element={<PrivateRouter/>}>
+          <Route path="/profile" element={<ProfileScreen/>} />
+          <Route path="/shipping" element={<ShippingScreen/>} />
+          <Route path="/payment" element={<PaymentScreen/>} />
+          <Route path="/placeorder" element={<PlaceOrderScreen/>} />
+          <Route path="/order/:id" element={<OrderScreen/>} />
+        </Route>
         <Route path="/cart/:id" element={<CartScreen/>} />
-        <Route path="/cart" element={<CartScreen/>} />
-        <Route path="/shipping" element={<ShippingScreen/>} />
-        <Route path="/payment" element={<PaymentScreen/>} />
-        <Route path="/placeorder" element={<PlaceOrderScreen/>} />
-        <Route path="/order/:id" element={<OrderScreen/>} />
+        <Route path="/cart" element={<CartScreen/>} /> 
         <Route path="*" element={<NotFound/>} />
       </Routes>
     </Router>
