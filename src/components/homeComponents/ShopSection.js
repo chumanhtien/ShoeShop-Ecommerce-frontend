@@ -9,7 +9,7 @@ import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Error";
 // import axios from "axios"
 
-const ShopSection = () => {
+const ShopSection = (props) => {
   // const [products, setProducts] = useState([]);
   // useEffect(() => {
   //   const fetchProducts = async () => {
@@ -19,14 +19,15 @@ const ShopSection = () => {
   //   fetchProducts();
   // }, []);
 
+  const {keyword, pageNumber} = props
   //redux
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
-  const {loading, error, products} = productList;
+  const {loading, error, products, pages, page} = productList;
 
   useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch]);
+    dispatch(listProducts(keyword, pageNumber));
+  }, [dispatch, keyword, pageNumber]);
   return (
     <Fragment>
       <div className="container">
@@ -103,7 +104,7 @@ const ShopSection = () => {
                   </div>
                 ))} */}
                 {/* Pagination */}
-                <Pagination />
+                <Pagination pages={pages} page={page} keyword={keyword ? keyword: ""}/>
               </div>
             </div>
           </div>
